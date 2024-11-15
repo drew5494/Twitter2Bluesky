@@ -5,7 +5,8 @@ This project is designed to monitor the latest tweets from a specific Twitter ac
 ## Install
 To get started, install the required dependencies:
 ```bash
-pip install asyncio aiohttp requests beautifulsoup4 twikit atproto
+pip install asyncio aiohttp requests beautifulsoup4 git+https://github.com/mdmrcglu/twikit.git
+ atproto
 ```
 
 ## Checklist

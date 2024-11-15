@@ -10,6 +10,7 @@ To get started, install the required dependencies:
 pip install asyncio aiohttp requests beautifulsoup4 git+https://github.com/mdmrcglu/twikit.git
  atproto
 ```
+Use a browser extension to download cookies from your Twitter account, then utilize the cookie_generator tool to create a login file compatible with twikit.
 
 ## Checklist
 - [X] Implement Twitter monitoring using twikit.

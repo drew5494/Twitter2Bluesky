@@ -13,7 +13,7 @@ Use a browser extension to download cookies from your Twitter account. Save the 
 
 Run the cookie_generator.py script to create a login file compatible with Twikit.
 
-Replace target-twitter-screen-name in the script with the desired Twitter username.
+Replace `target-twitter-screen-name` in the script with the desired Twitter username, and replace `your-bluesky-username` and `your-bluesky-password` with your Bluesky account credentials.
 
 Run the twitter2bluesky.py script to fetch the latest tweets and post them!
 

@@ -8,7 +8,7 @@ from twikit import Client
 from atproto_client.utils.text_builder import TextBuilder
 from atproto import Client as BlueskyClient
 from atproto import models
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 
 # Initialize Twikit and Bluesky clients
 client = Client('en-US')
@@ -50,14 +50,29 @@ def get_metadata(url):
         "thumbnail": thumbnail_url
     }
 
-# Expand shortened URLs
+
+# Function to clean up the URL by removing unwanted query parameters
+def clean_url(url):
+    parsed_url = urlparse(url)
+    
+    # Remove query parameters (you can add more conditions if needed)
+    cleaned_url = urlunparse(parsed_url._replace(query=""))
+    
+    return cleaned_url
+
+# Expand shortened URLs and clean them
 async def expand_url(short_url):
     async with aiohttp.ClientSession() as session:
         try:
             async with session.get(short_url, allow_redirects=False) as response:
                 if response.status in [301, 302]:
-                    return response.headers.get('Location', short_url)
-                return short_url
+                    full_url = response.headers.get('Location', short_url)
+                else:
+                    full_url = short_url
+                
+                # Clean the URL by removing query parameters
+                cleaned_url = clean_url(full_url)
+                return cleaned_url
         except Exception as e:
             print(f"Error expanding URL: {e}")
             return short_url

@@ -138,13 +138,13 @@ async def fetch_latest_tweet(user_id):
                         # thumbnail_url = data["result"]["ogImage"][0]["url"]
 
                         # Print the extracted fields
-                        print("ogTitle:", title)
-                        print("ogDescription:", description)
-                        print("ogImage:", thumbnail_url)
+                        # print("ogTitle:", title)
+                        # print("ogDescription:", description)
+                        # print("ogImage:", thumbnail_url)
                         
-                        # title = metadata["title"]
-                        # description = metadata["description"]
-                        # thumbnail_url = metadata["thumbnail"]
+                        title = metadata["title"]
+                        description = metadata["description"]
+                        thumbnail_url = metadata["thumbnail"]
 
                         tweet_text = re.sub(r'https://t.co/[a-zA-Z0-9]+', ' ', tweet_text)
 

@@ -5,8 +5,13 @@ Want to break free from billionaire-controlled X (formerly known as Twitter)? St
 Just a heads up—this script needs to keep running to do its thing. It checks for new tweets every 60 seconds, so if it stops, you'll miss out on those sweet updates!
 
 ## Install
+
+UPDATE
+Now using open-graph-scraper from Node JS 
+
 To get started, install the required dependencies:
 ```bash
+npm install open-graph-scraper
 pip install asyncio aiohttp requests beautifulsoup4 twikit atproto
 ```
 Use a browser extension to download cookies from your Twitter account. Save the cookies in a file named cookie.json and place it in the same directory as the scripts.

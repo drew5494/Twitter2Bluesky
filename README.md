@@ -7,10 +7,15 @@ Just a heads up—this script needs to keep running to do its thing. It checks f
 ## Install
 To get started, install the required dependencies:
 ```bash
-pip install asyncio aiohttp requests beautifulsoup4 git+https://github.com/mdmrcglu/twikit.git
- atproto
+pip install asyncio aiohttp requests beautifulsoup4 twikit atproto
 ```
-Use a browser extension to download cookies from your Twitter account, then utilize the cookie_generator tool to create a login file compatible with twikit.
+Use a browser extension to download cookies from your Twitter account. Save the cookies in a file named cookie.json and place it in the same directory as the scripts.
+
+Run the cookie_generator.py script to create a login file compatible with Twikit.
+
+Replace `target-twitter-screen-name` in the script with the desired Twitter username, and replace `your-bluesky-username` and `your-bluesky-password` with your Bluesky account credentials.
+
+Run the twitter2bluesky.py script to fetch the latest tweets and post them!
 
 ## Checklist
 - [X] Implement Twitter monitoring using twikit.

@@ -29,3 +29,5 @@ Run the twitter2bluesky.py script to fetch the latest tweets and post them!
 - [X] Authenticate and interact with the Bluesky API (atproto).
 - [ ] Multiple account support.
 
+## Support Me
+[![Support Me](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.buymeacoffee.com%2Fapi%2F%3Furl%3DaHR0cHM6Ly9jZG4uYnV5bWVhY29mZmVlLmNvbS91cGxvYWRzL3Byb2plY3RfdXBkYXRlcy8yMDIxLzA1LzkxOGJjMGZmYWU5YTE4NjU1NTNkNTRiYzExZTY1YzRiLmdpZg%3D%3D%26height%3D600%26width%3D1200&f=1&nofb=1&ipt=5a6439673445b7c068bb3874ad7e660256a3f879c70e04a0d60d574e628f6869&ipo=images)](https://github.com/sponsors/drew5494?frequency=recurring)

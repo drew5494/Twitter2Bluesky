@@ -15,7 +15,7 @@ ogs(options)
 
     // Save the result to a JSON file
     const jsonData = {
-      // error: error,
+      error: error,
       // html: html,
       result: result,
       response: response

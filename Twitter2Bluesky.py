@@ -11,6 +11,7 @@ from atproto import models
 from urllib.parse import urlparse, urlunparse
 import subprocess
 import json 
+import aiofiles
 
 # Initialize Twikit and Bluesky clients
 client = Client('en-US')
@@ -18,17 +19,23 @@ bluesky_client = BlueskyClient()
 
 # Asynchronous image downloader
 async def download_image_async(image_url, save_path):
-    async with aiohttp.ClientSession() as session:
+    print(f"Starting download for {image_url}")
+    timeout = aiohttp.ClientTimeout(total=10)  # 10-second timeout
+    headers = {'User-Agent': 'Mozilla/5.0'}  # Mimic a browser
+
+    async with aiohttp.ClientSession(timeout=timeout) as session:
         try:
-            async with session.get(image_url) as response:
+            print("Making request...")
+            async with session.get(image_url, headers=headers) as response:
+                print(f"Response received: {response.status}")
                 if response.status == 200:
-                    with open(save_path, 'wb') as file:
-                        file.write(await response.read())
+                    async with aiofiles.open(save_path, 'wb') as file:
+                        await file.write(await response.read())
                     print(f"Image saved to {save_path}")
                 else:
                     print(f"Failed to download image. Status code: {response.status}")
         except Exception as e:
-            print(f"Error downloading image: {e}")
+            print(f"Error: {e}")
 
 # Metadata extractor
 # def get_metadata(url):
@@ -126,37 +133,36 @@ async def fetch_latest_tweet(user_id):
                             data = json.load(file)
 
                         # Extract fields
-                        title = data["result"]["ogTitle"]
-                        description = data["result"]["ogDescription"]
-                        thumbnail_url = data["result"]["ogImage"][0]["url"]
+                        # title = data["result"]["ogTitle"]
+                        # description = data["result"]["ogDescription"]
+                        # thumbnail_url = data["result"]["ogImage"][0]["url"]
 
                         # Print the extracted fields
                         print("ogTitle:", title)
                         print("ogDescription:", description)
                         print("ogImage:", thumbnail_url)
                         
-                        title = metadata["title"]
-                        description = metadata["description"]
-                        thumbnail_url = metadata["thumbnail"]
+                        # title = metadata["title"]
+                        # description = metadata["description"]
+                        # thumbnail_url = metadata["thumbnail"]
 
                         tweet_text = re.sub(r'https://t.co/[a-zA-Z0-9]+', ' ', tweet_text)
 
                         if thumbnail_url and thumbnail_url.startswith("http"):
-                                await download_image_async(thumbnail_url, "image.jpg")
-
-                                if os.path.exists("image.jpg"):
-                                    with open('image.jpg', 'rb') as f:
-                                        img_data = f.read()
-                                    thumb = bluesky_client.upload_blob(img_data)
-                                    embed = models.AppBskyEmbedExternal.Main(
-                                        external=models.AppBskyEmbedExternal.External(
-                                            title=title,
-                                            description=description,
-                                            uri=full_url,
-                                            thumb=thumb.blob,
-                                        )
+                            await download_image_async(thumbnail_url, "image.jpg")
+                            if os.path.exists("image.jpg"):
+                                with open('image.jpg', 'rb') as f:
+                                    img_data = f.read()
+                                thumb = bluesky_client.upload_blob(img_data)
+                                embed = models.AppBskyEmbedExternal.Main(
+                                    external=models.AppBskyEmbedExternal.External(
+                                        title=title,
+                                        description=description,
+                                        uri=full_url,
+                                        thumb=thumb.blob,
                                     )
-                                os.remove("image.jpg")
+                                )
+                            os.remove("image.jpg")
                         
                 tb.text(tweet_text.strip())
 
@@ -183,7 +189,7 @@ async def main():
         return
     
     try:
-        bluesky_client.login('ctvnews-rss.bsky.social', 'Bianca2002')  # Replace with Bluesky credentials
+        bluesky_client.login('drew-t.bsky.social', 'bifbAv-ruxho6-fatvyt')  # Replace with Bluesky credentials
         print("Logged into Bluesky.")
     except Exception as e:
         print(f"Error logging into Bluesky: {e}")

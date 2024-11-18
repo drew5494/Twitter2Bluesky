@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "open-graph-scraper": "^6.8.2"
+  }
+}

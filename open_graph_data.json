@@ -1,0 +1,330 @@
+{
+  "result": {
+    "success": true,
+    "twitterCard": "summary_large_image",
+    "twitterSite": "@cbc",
+    "twitterTitle": "Demolishing buildings is a waste. There's another way: deconstruction | CBC News",
+    "twitterDescription": "Constructing buildings takes a lot of wood, metal, concrete and other valuable resources. Demolishing them generates a huge amount of waste and carbon emissions. But there's another way – what if they were \"deconstructed\" so the materials could be reused and recycled?",
+    "ogUrl": "https://www.cbc.ca/news/science/deconstruction-explainer-1.7383516",
+    "ogTitle": "Demolishing buildings is a waste. There's another way: deconstruction | CBC News",
+    "ogDescription": "Constructing buildings takes a lot of wood, metal, concrete and other valuable resources. Demolishing them generates a huge amount of waste and carbon emissions. But there's another way – what if they were \"deconstructed\" so the materials could be reused and recycled?",
+    "ogType": "article",
+    "ogLocale": "en_US",
+    "ogSiteName": "CBC",
+    "ogImage": [
+      {
+        "url": "https://i.cbc.ca/1.7383561.1731614444!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_620/meredith-moore.jpg",
+        "type": "jpg"
+      }
+    ],
+    "twitterImage": [
+      {
+        "url": "https://i.cbc.ca/1.7383561.1731614444!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_620/meredith-moore.jpg"
+      }
+    ],
+    "ogDate": "2024-11-17T16:32:35.684Z",
+    "favicon": "/a/favicon.ico",
+    "charset": "utf-8",
+    "jsonLD": [
+      {
+        "image": [
+          {
+            "datePublished": "2024-11-14T20:02Z",
+            "@type": "ImageObject",
+            "name": "Meredith Moore",
+            "description": "Meredith Moore stands in front of a house being deconstructed in Toronto by her company, Ouroboros Deconstruction, as foreman Fernando works in the background.",
+            "dateModified": "2024-11-14T20:00Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383561.1731614444!/fileImage/httpImage/meredith-moore.jpg"
+          },
+          {
+            "datePublished": "2024-11-14T20:23Z",
+            "@type": "ImageObject",
+            "name": "Rocky",
+            "description": "Crew member Rocky uses hand tools such as crowbars to take apart the roof truss of the house.",
+            "dateModified": "2024-11-14T20:21Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383593.1731615706!/fileImage/httpImage/rocky.jpg"
+          },
+          {
+            "datePublished": "2024-11-14T20:44Z",
+            "@type": "ImageObject",
+            "name": "Meredith Moore and Emma Arthur",
+            "description": "Meredith Moore shows homeowner Emma Arthur the frame being deconstructed, after the interiors had already been stripped.",
+            "dateModified": "2024-11-14T20:43Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383648.1731616987!/fileImage/httpImage/meredith-moore-and-emma-arthur.jpg"
+          },
+          {
+            "datePublished": "2024-11-14T20:10Z",
+            "@type": "ImageObject",
+            "name": "Deconstructed house",
+            "description": "The interior of the bungalow had already been stripped, and the wood frame was finally being deconstructed.",
+            "dateModified": "2024-11-14T20:08Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383567.1731614925!/fileImage/httpImage/deconstructed-house.jpg"
+          },
+          {
+            "datePublished": "2024-11-14T20:38Z",
+            "@type": "ImageObject",
+            "name": "Resilience",
+            "description": "The building is now a resource centre for homeless Indigenous people in Montreal.",
+            "dateModified": "2024-11-14T20:30Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383611.1731616259!/fileImage/httpImage/resilience.JPG"
+          },
+          {
+            "datePublished": "2024-11-14T20:28Z",
+            "@type": "ImageObject",
+            "name": "Materials stored for reuse",
+            "description": "Materials deconstructed from an antique shop in Montreal are stored for reuse in the building's next incarnation as a resource centre for homeless Indigenous people. ",
+            "dateModified": "2024-11-14T20:26Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383601.1731615973!/fileImage/httpImage/materials-stored-for-reuse.jpeg"
+          },
+          {
+            "datePublished": "2024-11-14T20:21Z",
+            "@type": "ImageObject",
+            "name": "Emma Arthur",
+            "description": "Homeowner Emma Arthur stands inside the house as crew member Rocky takes a break from deconstructing the roof.",
+            "dateModified": "2024-11-14T20:18Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383587.1731615517!/fileImage/httpImage/emma-arthur.jpg"
+          }
+        ],
+        "author": [
+          {
+            "image": {
+              "datePublished": "2024-07-04T18:46Z",
+              "@type": "ImageObject",
+              "name": "Emily Chung",
+              "description": "",
+              "dateModified": "2024-07-04T18:45Z",
+              "@context": "http://schema.org/",
+              "url": "https://i.cbc.ca/1.7254520.1720118725!/fileImage/httpImage/emily-chung.JPG"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "@context": "http://schema.org/",
+              "url": "https://www.cbc.ca/news/science/author/emily-chung-1.3488054",
+              "email": ""
+            },
+            "@type": "Person",
+            "jobTitle": "Science, Climate, Environment Reporter",
+            "name": "Emily Chung",
+            "description": "Emily Chung covers science, the environment and climate for CBC News. She has previously worked as a digital journalist for CBC Ottawa and as an occasional producer at CBC's Quirks & Quarks. She has a PhD in chemistry from the University of British Columbia. In 2019, she was part of the team that won a Digital Publishing Award for best newsletter for \"What on Earth.\" You can email story ideas to emily.chung@cbc.ca.",
+            "@context": "http://schema.org/",
+            "sameAs": [
+              "https://subscriptions.cbc.ca/listmanagement/forms/whatonearth"
+            ]
+          }
+        ],
+        "@type": "ReportageNewsArticle",
+        "description": "Constructing buildings takes a lot of wood, metal, concrete and other valuable resources. Demolishing them generates a huge amount of waste and carbon emissions. But there's another way – what if they were \"deconstructed\" so the materials could be reused and recycled?",
+        "alternateName": "Taking apart and separating valuable materials allows them to be recycled, reused",
+        "dateModified": "2024-11-17T16:32Z",
+        "video": [
+          {
+            "datePublished": "2024-09-17T21:08Z",
+            "alternativeHeadline": "A Vancouver-based company is saving homes from demolition and moving them across the province where they are badly needed. CBC’s Lyndsay Duncombe explains the process of recycling homes and the benefits that come with it. ",
+            "identifier": "",
+            "contentUrl": "https://www.cbc.ca/player/play/",
+            "uploadDate": "2024-09-17T21:08Z",
+            "@type": "VideoObject",
+            "name": "Homes set for demolition moved to where they’re needed",
+            "description": "A Vancouver-based company is saving homes from demolition and moving them across the province where they are badly needed. CBC’s Lyndsay Duncombe explains the process of recycling homes and the benefits that come with it. ",
+            "dateModified": "2024-09-17T21:09Z",
+            "@context": "http://schema.org/",
+            "thumbnailUrl": "https://i.cbc.ca/ais/b42c4d9e-d587-4f3f-9d8a-b171b45f798b,1726600565968/full/max/0/default.jpg"
+          }
+        ],
+        "@context": "http://schema.org/",
+        "datePublished": "2024-11-17T09:00Z",
+        "dateCreated": "2024-11-17T09:00Z",
+        "name": "Demolishing buildings is a waste. There's another way: deconstruction",
+        "publisher": {
+          "foundingDate": "1936-11-02T05:00Z",
+          "ethicsPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "verificationFactCheckingPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "@type": "NewsMediaOrganization",
+          "@context": "http://schema.org/",
+          "ownershipFundingInfo": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "actionableFeedbackPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "missionCoveragePrioritiesPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "diversityPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "masthead": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "diversityStaffingReport": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "unnamedSourcesPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "correctionsPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364"
+        },
+        "correction": [
+          {
+            "datePublished": "2024-11-17T16:26Z",
+            "@type": "CorrectionComment",
+            "text": "An earlier version of this story incorrectly said Meredith Moore moved from Toronto to New York. In fact, she moved from New York to Toronto.",
+            "@context": "http://schema.org/"
+          }
+        ],
+        "headline": "Demolishing buildings is a waste. There's another way: deconstruction",
+        "articleSection": "Science",
+        "thumbnailUrl": "https://i.cbc.ca/1.7383561.1731614444!/fileImage/httpImage/meredith-moore.jpg"
+      },
+      {
+        "image": [
+          {
+            "datePublished": "2024-11-14T20:02Z",
+            "@type": "ImageObject",
+            "name": "Meredith Moore",
+            "description": "Meredith Moore stands in front of a house being deconstructed in Toronto by her company, Ouroboros Deconstruction, as foreman Fernando works in the background.",
+            "dateModified": "2024-11-14T20:00Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383561.1731614444!/fileImage/httpImage/meredith-moore.jpg"
+          },
+          {
+            "datePublished": "2024-11-14T20:23Z",
+            "@type": "ImageObject",
+            "name": "Rocky",
+            "description": "Crew member Rocky uses hand tools such as crowbars to take apart the roof truss of the house.",
+            "dateModified": "2024-11-14T20:21Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383593.1731615706!/fileImage/httpImage/rocky.jpg"
+          },
+          {
+            "datePublished": "2024-11-14T20:44Z",
+            "@type": "ImageObject",
+            "name": "Meredith Moore and Emma Arthur",
+            "description": "Meredith Moore shows homeowner Emma Arthur the frame being deconstructed, after the interiors had already been stripped.",
+            "dateModified": "2024-11-14T20:43Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383648.1731616987!/fileImage/httpImage/meredith-moore-and-emma-arthur.jpg"
+          },
+          {
+            "datePublished": "2024-11-14T20:10Z",
+            "@type": "ImageObject",
+            "name": "Deconstructed house",
+            "description": "The interior of the bungalow had already been stripped, and the wood frame was finally being deconstructed.",
+            "dateModified": "2024-11-14T20:08Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383567.1731614925!/fileImage/httpImage/deconstructed-house.jpg"
+          },
+          {
+            "datePublished": "2024-11-14T20:38Z",
+            "@type": "ImageObject",
+            "name": "Resilience",
+            "description": "The building is now a resource centre for homeless Indigenous people in Montreal.",
+            "dateModified": "2024-11-14T20:30Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383611.1731616259!/fileImage/httpImage/resilience.JPG"
+          },
+          {
+            "datePublished": "2024-11-14T20:28Z",
+            "@type": "ImageObject",
+            "name": "Materials stored for reuse",
+            "description": "Materials deconstructed from an antique shop in Montreal are stored for reuse in the building's next incarnation as a resource centre for homeless Indigenous people. ",
+            "dateModified": "2024-11-14T20:26Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383601.1731615973!/fileImage/httpImage/materials-stored-for-reuse.jpeg"
+          },
+          {
+            "datePublished": "2024-11-14T20:21Z",
+            "@type": "ImageObject",
+            "name": "Emma Arthur",
+            "description": "Homeowner Emma Arthur stands inside the house as crew member Rocky takes a break from deconstructing the roof.",
+            "dateModified": "2024-11-14T20:18Z",
+            "@context": "http://schema.org/",
+            "url": "https://i.cbc.ca/1.7383587.1731615517!/fileImage/httpImage/emma-arthur.jpg"
+          }
+        ],
+        "author": [
+          {
+            "image": {
+              "datePublished": "2024-07-04T18:46Z",
+              "@type": "ImageObject",
+              "name": "Emily Chung",
+              "description": "",
+              "dateModified": "2024-07-04T18:45Z",
+              "@context": "http://schema.org/",
+              "url": "https://i.cbc.ca/1.7254520.1720118725!/fileImage/httpImage/emily-chung.JPG"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "@context": "http://schema.org/",
+              "url": "https://www.cbc.ca/news/science/author/emily-chung-1.3488054",
+              "email": ""
+            },
+            "@type": "Person",
+            "jobTitle": "Science, Climate, Environment Reporter",
+            "name": "Emily Chung",
+            "description": "Emily Chung covers science, the environment and climate for CBC News. She has previously worked as a digital journalist for CBC Ottawa and as an occasional producer at CBC's Quirks & Quarks. She has a PhD in chemistry from the University of British Columbia. In 2019, she was part of the team that won a Digital Publishing Award for best newsletter for \"What on Earth.\" You can email story ideas to emily.chung@cbc.ca.",
+            "@context": "http://schema.org/",
+            "sameAs": [
+              "https://subscriptions.cbc.ca/listmanagement/forms/whatonearth"
+            ]
+          }
+        ],
+        "@type": "ReportageNewsArticle",
+        "description": "Constructing buildings takes a lot of wood, metal, concrete and other valuable resources. Demolishing them generates a huge amount of waste and carbon emissions. But there's another way – what if they were \"deconstructed\" so the materials could be reused and recycled?",
+        "alternateName": "Taking apart and separating valuable materials allows them to be recycled, reused",
+        "dateModified": "2024-11-17T16:32Z",
+        "video": [
+          {
+            "datePublished": "2024-09-17T21:08Z",
+            "alternativeHeadline": "A Vancouver-based company is saving homes from demolition and moving them across the province where they are badly needed. CBC’s Lyndsay Duncombe explains the process of recycling homes and the benefits that come with it. ",
+            "identifier": "",
+            "contentUrl": "https://www.cbc.ca/player/play/",
+            "uploadDate": "2024-09-17T21:08Z",
+            "@type": "VideoObject",
+            "name": "Homes set for demolition moved to where they’re needed",
+            "description": "A Vancouver-based company is saving homes from demolition and moving them across the province where they are badly needed. CBC’s Lyndsay Duncombe explains the process of recycling homes and the benefits that come with it. ",
+            "dateModified": "2024-09-17T21:09Z",
+            "@context": "http://schema.org/",
+            "thumbnailUrl": "https://i.cbc.ca/ais/b42c4d9e-d587-4f3f-9d8a-b171b45f798b,1726600565968/full/max/0/default.jpg"
+          }
+        ],
+        "@context": "http://schema.org/",
+        "datePublished": "2024-11-17T09:00Z",
+        "dateCreated": "2024-11-17T09:00Z",
+        "name": "Demolishing buildings is a waste. There's another way: deconstruction",
+        "publisher": {
+          "foundingDate": "1936-11-02T05:00Z",
+          "ethicsPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "verificationFactCheckingPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "@type": "NewsMediaOrganization",
+          "@context": "http://schema.org/",
+          "ownershipFundingInfo": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "actionableFeedbackPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "missionCoveragePrioritiesPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "diversityPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "masthead": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "diversityStaffingReport": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "unnamedSourcesPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364",
+          "correctionsPolicy": "https://www.cbc.ca/news/about-cbc-news-1.1294364"
+        },
+        "correction": [
+          {
+            "datePublished": "2024-11-17T16:26Z",
+            "@type": "CorrectionComment",
+            "text": "An earlier version of this story incorrectly said Meredith Moore moved from Toronto to New York. In fact, she moved from New York to Toronto.",
+            "@context": "http://schema.org/"
+          }
+        ],
+        "headline": "Demolishing buildings is a waste. There's another way: deconstruction",
+        "articleSection": "Science",
+        "thumbnailUrl": "https://i.cbc.ca/1.7383561.1731614444!/fileImage/httpImage/meredith-moore.jpg"
+      },
+      {
+        "@context": "http://schema.org/",
+        "@type": "WebPage",
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": [
+            ".detailHeadline",
+            ".detailSummary"
+          ]
+        }
+      }
+    ],
+    "requestUrl": "https://www.cbc.ca/news/science/deconstruction-explainer-1.7383516"
+  },
+  "response": {}
+}

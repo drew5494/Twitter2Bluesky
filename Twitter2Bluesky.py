@@ -9,6 +9,8 @@ from atproto_client.utils.text_builder import TextBuilder
 from atproto import Client as BlueskyClient
 from atproto import models
 from urllib.parse import urlparse, urlunparse
+import subprocess
+import json 
 
 # Initialize Twikit and Bluesky clients
 client = Client('en-US')
@@ -29,26 +31,26 @@ async def download_image_async(image_url, save_path):
             print(f"Error downloading image: {e}")
 
 # Metadata extractor
-def get_metadata(url):
-    try:
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to retrieve the page: {e}")
-        return None
+# def get_metadata(url):
+#     try:
+#         response = requests.get(url, timeout=10)
+#         response.raise_for_status()
+#     except requests.exceptions.RequestException as e:
+#         print(f"Failed to retrieve the page: {e}")
+#         return None
     
-    soup = BeautifulSoup(response.text, 'html.parser')
-    title = soup.title.string if soup.title else "No title found"
-    description = soup.find("meta", {"name": "description"}) or soup.find("meta", {"property": "og:description"})
-    description_content = description["content"] if description else "No description found"
-    thumbnail = soup.find("meta", {"property": "og:image"})
-    thumbnail_url = thumbnail["content"] if thumbnail and "content" in thumbnail.attrs else None
+#     soup = BeautifulSoup(response.text, 'html.parser')
+#     title = soup.title.string if soup.title else "No title found"
+#     description = soup.find("meta", {"name": "description"}) or soup.find("meta", {"property": "og:description"})
+#     description_content = description["content"] if description else "No description found"
+#     thumbnail = soup.find("meta", {"property": "og:image"})
+#     thumbnail_url = thumbnail["content"] if thumbnail and "content" in thumbnail.attrs else None
     
-    return {
-        "title": title,
-        "description": description_content,
-        "thumbnail": thumbnail_url
-    }
+#     return {
+#         "title": title,
+#         "description": description_content,
+#         "thumbnail": thumbnail_url
+#     }
 
 
 # Function to clean up the URL by removing unwanted query parameters
@@ -105,15 +107,41 @@ async def fetch_latest_tweet(user_id):
                     for short_url in short_urls:
                         full_url = await expand_url(short_url)
                         print(f"Expanded link: {full_url}")
-                        metadata = get_metadata(full_url)
+                        # metadata = get_metadata(full_url)
+
+                        try:
+                        # Pass the URL as an argument to the Node.js script
+                            result = subprocess.run(['node', 'index.js', full_url], capture_output=True, text=True)
+
+                            # Check if the script executed successfully
+                            if result.returncode == 0:
+                                print("JS:", result.stdout)
+                            else:
+                                print("Error executing JavaScript:", result.stderr)
+                        except Exception as e:
+                            print(f"Error running JavaScript script: {e}")
+
+                        # Open and load JSON from a file
+                        with open('open_graph_data.json', 'r') as file:
+                            data = json.load(file)
+
+                        # Extract fields
+                        title = data["result"]["ogTitle"]
+                        description = data["result"]["ogDescription"]
+                        thumbnail_url = data["result"]["ogImage"][0]["url"]
+
+                        # Print the extracted fields
+                        print("ogTitle:", title)
+                        print("ogDescription:", description)
+                        print("ogImage:", thumbnail_url)
+                        
+                        title = metadata["title"]
+                        description = metadata["description"]
+                        thumbnail_url = metadata["thumbnail"]
+
                         tweet_text = re.sub(r'https://t.co/[a-zA-Z0-9]+', ' ', tweet_text)
 
-                        if metadata:
-                            title = metadata["title"]
-                            description = metadata["description"]
-                            thumbnail_url = metadata["thumbnail"]
-
-                            if thumbnail_url and thumbnail_url.startswith("http"):
+                        if thumbnail_url and thumbnail_url.startswith("http"):
                                 await download_image_async(thumbnail_url, "image.jpg")
 
                                 if os.path.exists("image.jpg"):
@@ -155,13 +183,13 @@ async def main():
         return
     
     try:
-        bluesky_client.login('your-bluesky-username', 'your-bluesky-password')  # Replace with Bluesky credentials
+        bluesky_client.login('ctvnews-rss.bsky.social', 'Bianca2002')  # Replace with Bluesky credentials
         print("Logged into Bluesky.")
     except Exception as e:
         print(f"Error logging into Bluesky: {e}")
         return
 
-    screen_name = 'target-twitter-screen-name'  # Replace with target Twitter screen name
+    screen_name = 'CTVNews'  # Replace with target Twitter screen name
     user = await client.get_user_by_screen_name(screen_name)
     if user:
         print(f"Found Twitter ID: {user.id}")

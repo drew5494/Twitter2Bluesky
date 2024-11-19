@@ -129,7 +129,7 @@ async def fetch_latest_tweet(user_id):
                             print(f"Error running JavaScript script: {e}")
 
                         # Open and load JSON from a file
-                        with open('open_graph_data.json', 'r') as file:
+                        with open('open_graph_data.json', 'r', encoding='utf-8') as file:
                             data = json.load(file)
 
                         # Extract fields
@@ -191,7 +191,7 @@ async def main():
         return
     
     try:
-        bluesky_client.login('drew-t.bsky.social', 'Bianca2002')  # Replace with Bluesky credentials
+        bluesky_client.login('cbcnews-rss.bsky.social', 'Bianca2002')  # Replace with Bluesky credentials
         print("Logged into Bluesky.")
     except Exception as e:
         print(f"Error logging into Bluesky: {e}")

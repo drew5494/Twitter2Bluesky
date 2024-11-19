@@ -133,18 +133,20 @@ async def fetch_latest_tweet(user_id):
                             data = json.load(file)
 
                         # Extract fields
-                        # title = data["result"]["ogTitle"]
-                        # description = data["result"]["ogDescription"]
-                        # thumbnail_url = data["result"]["ogImage"][0]["url"]
+                        title = data["result"]["ogTitle"]
+                        description = data["result"]["ogDescription"]
+                        thumbnail_url = data["result"]["ogImage"][0]["url"]
+
+                        os.remove('open_graph_data.json')
 
                         # Print the extracted fields
                         # print("ogTitle:", title)
                         # print("ogDescription:", description)
                         # print("ogImage:", thumbnail_url)
                         
-                        title = metadata["title"]
-                        description = metadata["description"]
-                        thumbnail_url = metadata["thumbnail"]
+                        # title = metadata["title"]
+                        # description = metadata["description"]
+                        # thumbnail_url = metadata["thumbnail"]
 
                         tweet_text = re.sub(r'https://t.co/[a-zA-Z0-9]+', ' ', tweet_text)
 
@@ -189,13 +191,13 @@ async def main():
         return
     
     try:
-        bluesky_client.login('drew-t.bsky.social', 'bifbAv-ruxho6-fatvyt')  # Replace with Bluesky credentials
+        bluesky_client.login('drew-t.bsky.social', 'Bianca2002')  # Replace with Bluesky credentials
         print("Logged into Bluesky.")
     except Exception as e:
         print(f"Error logging into Bluesky: {e}")
         return
 
-    screen_name = 'CTVNews'  # Replace with target Twitter screen name
+    screen_name = 'CBCNews'  # Replace with target Twitter screen name
     user = await client.get_user_by_screen_name(screen_name)
     if user:
         print(f"Found Twitter ID: {user.id}")

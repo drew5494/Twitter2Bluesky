@@ -8,6 +8,7 @@ Just a heads up—this script needs to keep running to do its thing. It checks f
 
 UPDATE
 Now using open-graph-scraper from Node JS 
+If you prefer BS4, you may use v1.0 
 
 To get started, install the required dependencies:
 ```bash

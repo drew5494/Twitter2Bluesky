@@ -107,64 +107,72 @@ async def fetch_latest_tweet(user_id):
             else:
                 print(f"Latest Tweet: {tweet_text}")
                 tb = TextBuilder()
+                general_url_pattern = r'https?://[^\s]+'
                 short_urls = re.findall(r'https://t.co/[a-zA-Z0-9]+', tweet_text)
                 embed = None
 
                 if short_urls:
-                    for short_url in short_urls:
-                        full_url = await expand_url(short_url)
-                        print(f"Expanded link: {full_url}")
-                        # metadata = get_metadata(full_url)
+                    full_url = await expand_url(short_urls[0])
+                    print(f"Expanded link: {full_url}")
+                    # metadata = get_metadata(full_url)
+                else:
+                    # If no short URLs, check for general URLs
+                    general_urls = re.findall(general_url_pattern, tweet_text)
+                    if general_urls:
+                        full_url = general_urls
+                        print("Found general URLs:", general_urls)
+                    else:
+                        print("No URLs found.")
 
-                        try:
-                        # Pass the URL as an argument to the Node.js script
-                            result = subprocess.run(['node', 'index.js', full_url], capture_output=True, text=True)
+                try:
+                # Pass the URL as an argument to the Node.js script
+                    result = subprocess.run(['node', 'index.js', full_url], capture_output=True, text=True)
 
-                            # Check if the script executed successfully
-                            if result.returncode == 0:
-                                print("JS:", result.stdout)
-                            else:
-                                print("Error executing JavaScript:", result.stderr)
-                        except Exception as e:
-                            print(f"Error running JavaScript script: {e}")
+                    # Check if the script executed successfully
+                    if result.returncode == 0:
+                        print("JS:", result.stdout)
+                    else:
+                        print("Error executing JavaScript:", result.stderr)
+                except Exception as e:
+                    print(f"Error running JavaScript script: {e}")
 
-                        # Open and load JSON from a file
-                        with open('open_graph_data.json', 'r', encoding='utf-8') as file:
-                            data = json.load(file)
+                # Open and load JSON from a file
+                with open('open_graph_data.json', 'r', encoding='utf-8') as file:
+                    data = json.load(file)
 
-                        # Extract fields
-                        title = data["result"]["ogTitle"]
-                        description = data["result"]["ogDescription"]
-                        thumbnail_url = data["result"]["ogImage"][0]["url"]
+                # Extract fields
+                title = data["result"].get("ogTitle", "No title found")
+                description = data["result"].get("ogDescription", "No description found")
+                thumbnail_url = data["result"].get("ogImage", [{"url": None}])[0]["url"]
 
-                        os.remove('open_graph_data.json')
+                os.remove('open_graph_data.json')
 
-                        # Print the extracted fields
-                        # print("ogTitle:", title)
-                        # print("ogDescription:", description)
-                        # print("ogImage:", thumbnail_url)
-                        
-                        # title = metadata["title"]
-                        # description = metadata["description"]
-                        # thumbnail_url = metadata["thumbnail"]
+                # Print the extracted fields
+                # print("ogTitle:", title)
+                # print("ogDescription:", description)
+                # print("ogImage:", thumbnail_url)
+                
+                # title = metadata["title"]
+                # description = metadata["description"]
+                # thumbnail_url = metadata["thumbnail"]
 
-                        tweet_text = re.sub(r'https://t.co/[a-zA-Z0-9]+', ' ', tweet_text)
+                tweet_text = re.sub(r'https://t.co/[a-zA-Z0-9]+', ' ', tweet_text)
 
-                        if thumbnail_url and thumbnail_url.startswith("http"):
-                            await download_image_async(thumbnail_url, "image.jpg")
-                            if os.path.exists("image.jpg"):
-                                with open('image.jpg', 'rb') as f:
-                                    img_data = f.read()
-                                thumb = bluesky_client.upload_blob(img_data)
-                                embed = models.AppBskyEmbedExternal.Main(
-                                    external=models.AppBskyEmbedExternal.External(
-                                        title=title,
-                                        description=description,
-                                        uri=full_url,
-                                        thumb=thumb.blob,
-                                    )
-                                )
-                            os.remove("image.jpg")
+                if thumbnail_url and thumbnail_url.startswith("http"):
+                    await download_image_async(thumbnail_url, "image.jpg")
+                    if os.path.exists("image.jpg"):
+                        with open('image.jpg', 'rb') as f:
+                            img_data = f.read()
+                        thumb = bluesky_client.upload_blob(img_data)
+                        embed = models.AppBskyEmbedExternal.Main(
+                            external=models.AppBskyEmbedExternal.External(
+                                title=title,
+                                description=description,
+                                uri=full_url,
+                                thumb=thumb.blob,
+                            )
+                        )
+                    os.remove("image.jpg")
                         
                 tb.text(tweet_text.strip())
 
@@ -191,13 +199,13 @@ async def main():
         return
     
     try:
-        bluesky_client.login('cbcnews-rss.bsky.social', 'Bianca2002')  # Replace with Bluesky credentials
+        bluesky_client.login('abc-rss.bsky.social', 'Bianca2002')  # Replace with Bluesky credentials
         print("Logged into Bluesky.")
     except Exception as e:
         print(f"Error logging into Bluesky: {e}")
         return
 
-    screen_name = 'CBCNews'  # Replace with target Twitter screen name
+    screen_name = 'abc'  # Replace with target Twitter screen name
     user = await client.get_user_by_screen_name(screen_name)
     if user:
         print(f"Found Twitter ID: {user.id}")

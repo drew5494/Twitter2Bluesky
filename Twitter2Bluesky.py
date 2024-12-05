@@ -199,7 +199,7 @@ async def main():
         return
     
     try:
-        bluesky_client.login('abc-rss.bsky.social', 'Bianca2002')  # Replace with Bluesky credentials
+        bluesky_client.login('account.bsky.social', 'your-bluesky-password')  # Replace with Bluesky credentials
         print("Logged into Bluesky.")
     except Exception as e:
         print(f"Error logging into Bluesky: {e}")

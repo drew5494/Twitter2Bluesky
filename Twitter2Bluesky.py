@@ -12,6 +12,7 @@ from urllib.parse import urlparse, urlunparse
 import subprocess
 import json
 import aiofiles
+import certifi
 
 # Initialize Twikit and Bluesky clients
 client = Client('en-US')
@@ -78,8 +79,9 @@ async def fetch_latest_tweet(user_id, choice):
             else:
                 print(f"Latest Tweet: {tweet_text}")
                 tb = TextBuilder()
-                general_url_pattern = r'https?://[^\s]+'
+                # general_url_pattern = r'https?://[^\s]+'
                 short_urls = re.findall(r'https://t.co/[a-zA-Z0-9]+', tweet_text)
+                print(f"Short : {short_urls}")
                 embed = None
                 title, description, thumbnail_url = None, None, None
 
@@ -95,6 +97,7 @@ async def fetch_latest_tweet(user_id, choice):
                         thumbnail_url = metadata["thumbnail"]
                     elif choice == "2":
                         try:
+                            print("FULL", full_url)
                             result = subprocess.run(['node', 'index.js', full_url], capture_output=True, text=True)
                             if result.returncode == 0:
                                 print("JS:", result.stdout)
@@ -110,8 +113,9 @@ async def fetch_latest_tweet(user_id, choice):
                         os.remove('open_graph_data.json')
 
                 tweet_text = re.sub(r'https://t.co/[a-zA-Z0-9]+', ' ', tweet_text)
-
+                # print("thumb", thumbnail_url)
                 if thumbnail_url and thumbnail_url.startswith("http"):
+                    print("RD img")
                     success = await download_image_async(thumbnail_url, "image.jpg")
                     if success:
                         with open('image.jpg', 'rb') as f:
@@ -144,11 +148,10 @@ async def fetch_latest_tweet(user_id, choice):
 # Get metadata using BeautifulSoup (BS4)
 def get_metadata(url):
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, verify=certifi.where())
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"Failed to retrieve the page: {e}")
-        return {"title": "Error", "description": "Error", "thumbnail": None}
     soup = BeautifulSoup(response.text, 'html.parser')
     title = soup.title.string if soup.title else "No title found"
     description = soup.find("meta", {"name": "description"}) or soup.find("meta", {"property": "og:description"})

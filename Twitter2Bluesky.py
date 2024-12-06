@@ -191,22 +191,35 @@ async def fetch_latest_tweet(user_id):
 
 # Main function
 async def main():
+    # Prompt for Twitter screen name
+    twitter_screen_name = input("Enter the Twitter screen name (or leave blank to use default): ").strip() or "cp24"
+
+    # Check if Bluesky username and password are provided; prompt if not
+    bluesky_username = input("Enter your Bluesky username: ").strip()
+    bluesky_password = input("Enter your Bluesky password: ").strip()
+
+    if not bluesky_username or not bluesky_password:
+        print("Bluesky username and password are required.")
+        return
+
+    # Attempt to log in to Twitter
     try:
         client.load_cookies('output_file.json')  # Replace with actual cookie file path
         print("Logged into Twitter.")
     except Exception as e:
         print(f"Failed to log in to Twitter: {e}")
         return
-    
+
+    # Attempt to log in to Bluesky
     try:
-        bluesky_client.login('abc-rss.bsky.social', 'Bianca2002')  # Replace with Bluesky credentials
+        bluesky_client.login(bluesky_username, bluesky_password)
         print("Logged into Bluesky.")
     except Exception as e:
         print(f"Error logging into Bluesky: {e}")
         return
 
-    screen_name = 'abc'  # Replace with target Twitter screen name
-    user = await client.get_user_by_screen_name(screen_name)
+    # Fetch Twitter user details and start the tweet fetching loop
+    user = await client.get_user_by_screen_name(twitter_screen_name)
     if user:
         print(f"Found Twitter ID: {user.id}")
         await fetch_latest_tweet(user.id)

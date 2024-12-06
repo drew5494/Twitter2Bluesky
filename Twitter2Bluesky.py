@@ -212,11 +212,7 @@ async def main():
 
     # Attempt to log in to Bluesky
     try:
-<<<<<<< HEAD
         bluesky_client.login(bluesky_username, bluesky_password)
-=======
-        bluesky_client.login('account.bsky.social', 'your-bluesky-password')  # Replace with Bluesky credentials
->>>>>>> b366cd86375e16090512aec4a2c1b63917837d4f
         print("Logged into Bluesky.")
     except Exception as e:
         print(f"Error logging into Bluesky: {e}")

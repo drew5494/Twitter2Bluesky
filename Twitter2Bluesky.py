@@ -84,9 +84,10 @@ async def fetch_latest_tweet(user_id, choice):
                 title, description, thumbnail_url = None, None, None
 
                 if short_urls:
-                    full_url = await expand_url(short_urls[0])
-                    print(f"Expanded link: {full_url}")
-
+                    for url_info in latest_tweet.urls:
+                        expanded_url = url_info.get('expanded_url')  # Get the 'expanded_url' value
+                        full_url = expanded_url
+                        print("Expanded URL:", expanded_url)
                     if choice == "1":
                         metadata = get_metadata(full_url)
                         title = metadata["title"]
@@ -139,16 +140,6 @@ async def fetch_latest_tweet(user_id, choice):
         
         print("Sleeping...")
         await asyncio.sleep(60)
-
-# Expand shortened URLs (t.co) to full URLs
-async def expand_url(short_url):
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.head(short_url, allow_redirects=True) as response:
-                return str(response.url)
-    except Exception as e:
-        print(f"Error expanding URL: {e}")
-        return short_url
 
 # Get metadata using BeautifulSoup (BS4)
 def get_metadata(url):

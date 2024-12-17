@@ -1,4 +1,4 @@
-# Twitter2Bluesky
+# TwitterMirrorBot
 
 Want to break free from billionaire-controlled X (formerly known as Twitter)? Still craving updates from accounts not yet on Bluesky? Well, do we have a project for you! This tool is designed to keep tabs on the latest tweets from a specific Twitter/X account in real-time and cross-post them to Bluesky, the decentralized social network. Using the twikit library, the script pulls the latest tweets from Twitter and seamlessly integrates with Bluesky's API for easy cross-posting.
 

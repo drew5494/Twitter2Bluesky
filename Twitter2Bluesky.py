@@ -1,183 +1,182 @@
 import asyncio
 import os
-import aiohttp
 import re
-import requests
+import io
+import aiohttp
 from bs4 import BeautifulSoup
 from twikit import Client
 from atproto_client.utils.text_builder import TextBuilder
 from atproto import Client as BlueskyClient
 from atproto import models
-from urllib.parse import urlparse, urlunparse
-import subprocess
-import json
-import aiofiles
-import certifi
 
-# Initialize Twikit and Bluesky clients
+# --- CONFIGURATION ---
+# Load from Environment variables for better memory hygiene in containers
+# Or fallback to hardcoded strings if running locally
+TWITTER_USER = os.getenv('TWITTER_USER', '')
+BLUESKY_USER = os.getenv('BLUESKY_USER', '')
+BLUESKY_PASS = os.getenv('BLUESKY_PASS', '')
+
+# Pre-compile regex to save CPU/Memory in loop
+SHORT_URL_PATTERN = re.compile(r'https://t.co/[a-zA-Z0-9]+')
+
+# Initialize Clients
 client = Client('en-US')
 bluesky_client = BlueskyClient()
 
-# Main function
-async def main():
-    print("Select an option:")
-    print("1. BeautifulSoup (BS4) for metadata extraction")
-    print("2. Open Graph Scraper (Node.js) for metadata extraction")
-    choice = input("Enter 1 or 2: ").strip()
-
-    if choice not in ["1", "2"]:
-        print("Invalid choice. Exiting...")
-        return
-
-    twitter_screen_name = input("Enter the Twitter screen name (or leave blank to use default): ").strip() or "cp24"
-    bluesky_username = input("Enter your Bluesky username: ").strip()
-    bluesky_password = input("Enter your Bluesky password: ").strip()
-
-    if not bluesky_username or not bluesky_password:
-        print("Bluesky username and password are required.")
-        return
-
+async def get_metadata(session, url):
+    """
+    Extracts OpenGraph metadata using the shared async session.
+    Pure Python: No external Node.js process required.
+    """
     try:
-        client.load_cookies('output_file.json')
-        print("Logged into Twitter.")
+        async with session.get(url, timeout=10) as response:
+            if response.status != 200:
+                return None
+            
+            html = await response.text()
+            soup = BeautifulSoup(html, 'html.parser')
+            
+            # Efficient extraction using simple lookups
+            title = soup.title.string if soup.title else "No title"
+            
+            # Try OG tags first, fall back to standard meta
+            og_desc = soup.find("meta", property="og:description")
+            std_desc = soup.find("meta", attrs={"name": "description"})
+            description = (og_desc or std_desc or {}).get("content", "No description")
+            
+            og_img = soup.find("meta", property="og:image")
+            thumbnail = og_img["content"] if og_img else None
+            
+            return {
+                "title": title,
+                "description": description,
+                "thumbnail": thumbnail
+            }
     except Exception as e:
-        print(f"Failed to log in to Twitter: {e}")
+        print(f"Metadata extraction warning: {e}")
+        return None
+
+async def fetch_image_to_memory(session, url):
+    """
+    Downloads image directly to RAM (BytesIO) to avoid Disk I/O overhead.
+    """
+    try:
+        async with session.get(url, timeout=15) as response:
+            if response.status == 200:
+                data = await response.read()
+                return io.BytesIO(data) # Return in-memory binary stream
+    except Exception as e:
+        print(f"Image download warning: {e}")
+    return None
+
+async def main():
+    # 1. Login Logic
+    if not BLUESKY_USER or not BLUESKY_PASS:
+        print("Set BLUESKY_USER and BLUESKY_PASS env vars or edit config.")
         return
 
     try:
-        bluesky_client.login(bluesky_username, bluesky_password)
+        # Check if cookies exist before loading
+        if os.path.exists('output_file.json'):
+            client.load_cookies('output_file.json')
+            print("Logged into Twitter (Cookies).")
+        else:
+            print("No Twitter cookies found. Please ensure output_file.json exists.")
+            # Optional: Add manual login logic here if needed
+            
+        bluesky_client.login(BLUESKY_USER, BLUESKY_PASS)
         print("Logged into Bluesky.")
     except Exception as e:
-        print(f"Error logging into Bluesky: {e}")
+        print(f"Login failed: {e}")
         return
 
-    user = await client.get_user_by_screen_name(twitter_screen_name)
-    if user:
-        print(f"Found Twitter ID: {user.id}")
-        await fetch_latest_tweet(user.id, choice)
-    else:
-        print("User not found.")
+    user = await client.get_user_by_screen_name(TWITTER_USER)
+    if not user:
+        print("Twitter user not found.")
+        return
+        
+    print(f"Monitoring ID: {user.id}")
 
-# Fetch latest tweets and post to Bluesky
-async def fetch_latest_tweet(user_id, choice):
+    # 2. Shared Session & Loop
+    # Create ONE session for the entire lifecycle
+    async with aiohttp.ClientSession() as session:
+        await monitor_tweets(session, user.id)
+
+async def monitor_tweets(session, user_id):
     previous_tweet_id = None
-
+    
     while True:
         try:
+            # Twikit fetch
             tweets = await client.get_user_tweets(user_id, 'Tweets', count=1)
+            
             if not tweets:
-                print("No tweets found.")
+                print("No tweets returned.")
                 await asyncio.sleep(60)
                 continue
 
             latest_tweet = tweets[0]
-            tweet_id = latest_tweet.id
-            tweet_text = latest_tweet.text
-
-            if tweet_id == previous_tweet_id:
+            
+            if previous_tweet_id == latest_tweet.id:
                 print("No new tweets.")
             else:
-                print(f"Latest Tweet: {tweet_text}")
-                tb = TextBuilder()
-                # general_url_pattern = r'https?://[^\s]+'
-                short_urls = re.findall(r'https://t.co/[a-zA-Z0-9]+', tweet_text)
-                print(f"Short : {short_urls}")
+                # --- NEW TWEET PROCESSING ---
+                print(f"New Tweet: {latest_tweet.text[:50]}...")
+                
+                # Extract URLs
+                full_url = None
+                if latest_tweet.urls:
+                    full_url = latest_tweet.urls[0].get('expanded_url')
+                
                 embed = None
-                title, description, thumbnail_url = None, None, None
-
-                if short_urls:
-                    for url_info in latest_tweet.urls:
-                        expanded_url = url_info.get('expanded_url')  # Get the 'expanded_url' value
-                        full_url = expanded_url
-                        print("Expanded URL:", expanded_url)
-                    if choice == "1":
-                        metadata = get_metadata(full_url)
-                        title = metadata["title"]
-                        description = metadata["description"]
-                        thumbnail_url = metadata["thumbnail"]
-                    elif choice == "2":
-                        try:
-                            print("FULL", full_url)
-                            result = subprocess.run(['node', 'index.js', full_url], capture_output=True, text=True)
-                            if result.returncode == 0:
-                                print("JS:", result.stdout)
-                            else:
-                                print("Error executing JavaScript:", result.stderr)
-                        except Exception as e:
-                            print(f"Error running JavaScript script: {e}")
-                        with open('open_graph_data.json', 'r', encoding='utf-8') as file:
-                            data = json.load(file)
-                        title = data["result"].get("ogTitle", "No title found")
-                        description = data["result"].get("ogDescription", "No description found")
-                        thumbnail_url = data["result"].get("ogImage", [{"url": None}])[0]["url"]
-                        os.remove('open_graph_data.json')
-
-                tweet_text = re.sub(r'https://t.co/[a-zA-Z0-9]+', ' ', tweet_text)
-                # print("thumb", thumbnail_url)
-                if thumbnail_url and thumbnail_url.startswith("http"):
-                    print("RD img")
-                    success = await download_image_async(thumbnail_url, "image.jpg")
-                    if success:
-                        with open('image.jpg', 'rb') as f:
-                            img_data = f.read()
-                        thumb = bluesky_client.upload_blob(img_data)
-                        embed = models.AppBskyEmbedExternal.Main(
-                            external=models.AppBskyEmbedExternal.External(
-                                title=title,
-                                description=description,
-                                uri=full_url,
-                                thumb=thumb.blob,
-                            )
-                        )
-                        os.remove("image.jpg")
+                
+                # Process Embeds (Metadata & Images)
+                if full_url:
+                    print(f"Processing URL: {full_url}")
+                    metadata = await get_metadata(session, full_url)
+                    
+                    if metadata and metadata['thumbnail']:
+                        # Download directly to memory buffer
+                        img_buffer = await fetch_image_to_memory(session, metadata['thumbnail'])
                         
-                tb.text(tweet_text.strip())
-                try:
-                    bluesky_post = bluesky_client.send_post(tb, embed=embed)
-                    print(f"Posted to Bluesky: {bluesky_post}")
-                except Exception as e:
-                    print(f"Error posting to Bluesky: {e}")
+                        if img_buffer:
+                            # Upload blob directly from RAM
+                            thumb_blob = bluesky_client.upload_blob(img_buffer.getvalue())
+                            
+                            embed = models.AppBskyEmbedExternal.Main(
+                                external=models.AppBskyEmbedExternal.External(
+                                    title=metadata['title'],
+                                    description=metadata['description'],
+                                    uri=full_url,
+                                    thumb=thumb_blob.blob,
+                                )
+                            )
+                            # Explicit cleanup
+                            img_buffer.close()
+                            del img_buffer
 
-                previous_tweet_id = tweet_id
+                # Clean text
+                clean_text = SHORT_URL_PATTERN.sub('', latest_tweet.text).strip()
+                
+                tb = TextBuilder()
+                tb.text(clean_text)
+
+                # Post to Bluesky
+                try:
+                    bluesky_client.send_post(tb, embed=embed)
+                    print("Posted to Bluesky successfully.")
+                    previous_tweet_id = latest_tweet.id
+                except Exception as e:
+                    print(f"Bluesky post error: {e}")
+
         except Exception as e:
-            print(f"Error fetching tweet: {e}")
-        
-        print("Sleeping...")
+            print(f"Critical Loop Error: {e}")
+
+        # Smart sleep
         await asyncio.sleep(60)
 
-# Get metadata using BeautifulSoup (BS4)
-def get_metadata(url):
-    try:
-        response = requests.get(url, verify=certifi.where())
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to retrieve the page: {e}")
-    soup = BeautifulSoup(response.text, 'html.parser')
-    title = soup.title.string if soup.title else "No title found"
-    description = soup.find("meta", {"name": "description"}) or soup.find("meta", {"property": "og:description"})
-    description_content = description["content"] if description else "No description found"
-    thumbnail = soup.find("meta", {"property": "og:image"})
-    thumbnail_url = thumbnail["content"] if thumbnail and "content" in thumbnail.attrs else None
-    
-    return {"title": title, "description": description_content, "thumbnail": thumbnail_url}
-
-# Download image asynchronously
-async def download_image_async(url, filename):
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                if response.status == 200:
-                    async with aiofiles.open(filename, mode='wb') as f:
-                        await f.write(await response.read())
-                    print(f"Image downloaded successfully: {filename}")
-                    return True
-                else:
-                    print(f"Failed to download image. HTTP Status: {response.status}")
-                    return False
-    except Exception as e:
-        print(f"Error downloading image: {e}")
-        return False
-
-# Start the program
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\nStopping bot...")

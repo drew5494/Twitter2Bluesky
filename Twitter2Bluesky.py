@@ -8,6 +8,7 @@ from twikit import Client
 from atproto_client.utils.text_builder import TextBuilder
 from atproto import Client as BlueskyClient
 from atproto import models
+import gc # Added for optional manual cleanup/debugging
 
 # --- CONFIGURATION ---
 # Load from Environment variables for better memory hygiene in containers
@@ -26,15 +27,21 @@ bluesky_client = BlueskyClient()
 async def get_metadata(session, url):
     """
     Extracts OpenGraph metadata using the shared async session.
-    Pure Python: No external Node.js process required.
+    Optimized: Only reads the first 10KB of HTML and uses the efficient 'lxml' parser.
     """
     try:
         async with session.get(url, timeout=10) as response:
             if response.status != 200:
                 return None
             
-            html = await response.text()
-            soup = BeautifulSoup(html, 'html.parser')
+            # --- OPTIMIZATION 2: Read only the first 10KB of the response ---
+            # This is sufficient to capture title and meta tags, reducing the memory required 
+            # for parsing large articles/pages.
+            html_chunk = await response.content.read(1024 * 10) 
+            
+            # --- OPTIMIZATION 1: Use lxml parser ---
+            # You must ensure 'pip install lxml' has been run.
+            soup = BeautifulSoup(html_chunk, 'lxml')
             
             # Efficient extraction using simple lookups
             title = soup.title.string if soup.title else "No title"
@@ -46,6 +53,9 @@ async def get_metadata(session, url):
             
             og_img = soup.find("meta", property="og:image")
             thumbnail = og_img["content"] if og_img else None
+            
+            # Explicitly delete the soup object to help Python's GC
+            del soup 
             
             return {
                 "title": title,
@@ -151,9 +161,12 @@ async def monitor_tweets(session, user_id):
                                     thumb=thumb_blob.blob,
                                 )
                             )
-                            # Explicit cleanup
+                            # Explicit cleanup to minimize memory spikes
                             img_buffer.close()
                             del img_buffer
+                            del thumb_blob
+                            
+                    del metadata # Clean up metadata dict
 
                 # Clean text
                 clean_text = SHORT_URL_PATTERN.sub('', latest_tweet.text).strip()
@@ -168,6 +181,10 @@ async def monitor_tweets(session, user_id):
                     previous_tweet_id = latest_tweet.id
                 except Exception as e:
                     print(f"Bluesky post error: {e}")
+                
+                # --- OPTIONAL: Force Garbage Collection ---
+                # Helps ensure memory from the last processing run is released internally.
+                gc.collect() 
 
         except Exception as e:
             print(f"Critical Loop Error: {e}")

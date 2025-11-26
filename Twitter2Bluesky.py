@@ -57,7 +57,7 @@ async def fetch_image_to_memory(session, url, max_bytes=1024 * 1024):
     try:
         async with session.get(url, timeout=15) as response:
             if response.status == 200:
-                data = await response.content.read(max_bytes)
+                data = await response.read()  # removed max_bytes limit
                 return io.BytesIO(data)
     except Exception as e:
         print(f"Image download warning: {e}")
